@@ -20,8 +20,9 @@
 # Go workspace file
 go.work
 
-# Compiled binary
+# Compiled binaries
 /bip39
+/targets
 
 # Out folder used for testing
 out/
