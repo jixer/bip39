@@ -118,6 +118,7 @@ func main() {
 	disableConsole := parser.Flag("c", "disable-console-output", &argparse.Options{Required: false, Help: "Disable console output"})
 	disableFile := parser.Flag("f", "disable-file-output", &argparse.Options{Required: false, Help: "Disable file output"})
 	outputFolder := parser.String("o", "output-folder", &argparse.Options{Required: false, Help: "Output folder for file output", Default: "."})
+	mneumonic := parser.String("m", "mnemonic", &argparse.Options{Required: false, Help: "Provide a mnemonic instead of letting command generate one"})
 
 	// Parse input
 	err := parser.Parse(os.Args)
@@ -134,7 +135,7 @@ func main() {
 	}
 
 	// Generate a mnemonic for memorization or user-friendly seeds
-	result := generate(*name, "")
+	result := generate(*name, *mneumonic)
 
 	// Print to console unless console output disabled
 	if !*disableConsole {
