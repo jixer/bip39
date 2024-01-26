@@ -22,3 +22,6 @@ go.work
 
 # Compiled binary
 /bip39
+
+# Out folder used for testing
+out/
