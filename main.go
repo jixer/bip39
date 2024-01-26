@@ -69,6 +69,14 @@ func generate(name string, mnemonic string) bip39Result {
 	}
 }
 
+func generateBatch(count int) []bip39Result {
+	results := make([]bip39Result, count)
+	for i := 0; i < count; i++ {
+		results[i] = generate("", "")
+	}
+	return results
+}
+
 func printToConsole(result bip39Result) {
 	fmt.Printf("Name: %s\n", result.Name)
 	fmt.Printf("Mnemonic: %s\n", result.Mnemonic)
@@ -119,6 +127,7 @@ func main() {
 	disableFile := parser.Flag("f", "disable-file-output", &argparse.Options{Required: false, Help: "Disable file output"})
 	outputFolder := parser.String("o", "output-folder", &argparse.Options{Required: false, Help: "Output folder for file output", Default: "."})
 	mneumonic := parser.String("m", "mnemonic", &argparse.Options{Required: false, Help: "Provide a mnemonic instead of letting command generate one"})
+	batchMode := parser.Int("b", "batch-mode", &argparse.Options{Required: false, Help: "Generate a batch of mnemonics", Default: 0})
 
 	// Parse input
 	err := parser.Parse(os.Args)
@@ -135,15 +144,23 @@ func main() {
 	}
 
 	// Generate a mnemonic for memorization or user-friendly seeds
-	result := generate(*name, *mneumonic)
-
-	// Print to console unless console output disabled
-	if !*disableConsole {
-		printToConsole(result)
+	var results []bip39Result
+	if *batchMode > 0 {
+		results = generateBatch(*batchMode)
+	} else {
+		result := generate(*name, *mneumonic)
+		results = []bip39Result{result}
 	}
 
-	// Save to file unless file output disabled
-	if !*disableFile {
-		saveToFile(result, *outputFolder)
+	for _, result := range results {
+		// Print to console unless console output disabled
+		if !*disableConsole {
+			printToConsole(result)
+		}
+
+		// Save to file unless file output disabled
+		if !*disableFile {
+			saveToFile(result, *outputFolder)
+		}
 	}
 }
