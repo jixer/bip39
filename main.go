@@ -19,25 +19,6 @@ type bip39Result struct {
 	PublicKey string `json:"publicKey"`
 }
 
-func generate(name string, mnemonic string) bip39Result {
-	if name == "" {
-		name = uuid.NewString()
-	}
-
-	if mnemonic == "" {
-		mnemonic = generateMnemonic()
-	}
-
-	seed, masterKey, publicKey := parseSeed(mnemonic)
-	return bip39Result{
-		Name:      name,
-		Mnemonic:  mnemonic,
-		Seed:      fmt.Sprintf("%x", seed),
-		MasterKey: fmt.Sprintf("%x", masterKey.Key),
-		PublicKey: fmt.Sprintf("%x", publicKey.Key),
-	}
-}
-
 func generateMnemonic() string {
 	// Generate a mnemonic for memorization or user-friendly seeds
 	entropy, err := bip39.NewEntropy(256)
@@ -67,6 +48,25 @@ func parseSeed(mnemonic string) (seed []byte, masterKey *bip32.Key, publicKey *b
 
 	publicKey = masterKey.PublicKey()
 	return
+}
+
+func generate(name string, mnemonic string) bip39Result {
+	if name == "" {
+		name = uuid.NewString()
+	}
+
+	if mnemonic == "" {
+		mnemonic = generateMnemonic()
+	}
+
+	seed, masterKey, publicKey := parseSeed(mnemonic)
+	return bip39Result{
+		Name:      name,
+		Mnemonic:  mnemonic,
+		Seed:      fmt.Sprintf("%x", seed),
+		MasterKey: fmt.Sprintf("%x", masterKey.Key),
+		PublicKey: fmt.Sprintf("%x", publicKey.Key),
+	}
 }
 
 func printToConsole(result bip39Result) {
