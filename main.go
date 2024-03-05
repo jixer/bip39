@@ -80,9 +80,12 @@ func generateBatch(count int) []bip39Result {
 func printToConsole(result bip39Result) {
 	fmt.Printf("Name: %s\n", result.Name)
 	fmt.Printf("Mnemonic: %s\n", result.Mnemonic)
-	fmt.Printf("Seed: %x\n", result.Seed)
-	fmt.Printf("Master private key: %x\n", result.MasterKey)
-	fmt.Printf("Master public key: %x\n", result.PublicKey)
+	fmt.Printf("Seed: %s\n", result.Seed)
+	fmt.Printf("Seed (hex): %x\n", result.Seed)
+	fmt.Printf("Master private key: %s\n", result.MasterKey)
+	fmt.Printf("Master private key (hex): %x\n", result.MasterKey)
+	fmt.Printf("Master public key: %s\n", result.PublicKey)
+	fmt.Printf("Master public key (hex): %x\n", result.PublicKey)
 }
 
 func saveToFile(result bip39Result, outputFolder string) {
